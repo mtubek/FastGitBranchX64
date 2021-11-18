@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="FastGitBranchX64.FastGitBranchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FastGitBranchX64"
+             xmlns:toolkit="clr-namespace:Community.VisualStudio.Toolkit;assembly=Community.VisualStudio.Toolkit"  
+             toolkit:Themes.UseVsTheme="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400" MinWidth="100" MinHeight="98" BorderThickness="1" Margin="0" Padding="10">
+    <StackPanel>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+            <Label Content="First part"/>
+            <ComboBox x:Name="firstPart" Width="120" IsEditable="True" SelectionChanged="firstPart_SelectionChanged" KeyUp="firstPart_KeyUp" />
+            <Label Content="Second part"/>
+            <ComboBox x:Name="secondPart" Width="120" IsEditable="True" SelectionChanged="secondPart_SelectionChanged" KeyUp="secondPart_KeyUp" />
+            
+        </StackPanel>
+        <Label Content="Branch Name"/>
+        <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyDown"/>
+        <Label x:Name="branchNamePreview" Content="Branch Name" Foreground="Red"/>
+        <CheckBox x:Name="checkBoxCheckout" Content="Checkout"  IsChecked="True" Margin="0,0,0,10">
+            
+        </CheckBox>
+        <Button x:Name="buttonCreateBranch" Content="Create" Margin="0,0,0,10" Click="buttonCreateBranch_Click"/>
+        <Button x:Name="buttonCancel" Content="Cancel" Margin="0,0,0,10" Click="buttonCancel_Click"/>
+
+    </StackPanel>
+</UserControl>

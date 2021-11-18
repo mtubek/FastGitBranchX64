@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Include href="KnownImageIds.vsct"/>
+  <Include href="VSGlobals.vsct"/>
+
+  <Commands package="FastGitBranchX64">
+    <Groups>
+      <Group guid="FastGitBranchX64" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="VSMainMenu" id="Tools"/>
+      </Group>
+    </Groups>
+
+    <!--This section defines the elements the user can interact with, like a menu command or a button
+        or combo box in a toolbar. -->
+    <Buttons>
+      <Button guid="FastGitBranchX64" id="CreateBranch" priority="0x0100" type="Button">
+        <Parent guid="FastGitBranchX64" id="MyMenuGroup" />
+	    <Icon guid="ImageCatalogGuid" id="Git" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Create Branch</ButtonText>
+          <LocCanonicalName>.FastGitBranchX64.CreateBranch</LocCanonicalName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+	<KeyBindings>
+		<KeyBinding guid="FastGitBranchX64" id="CreateBranch" editor="guidVSStd97" key1="d" mod1="Control Shift" key2="d" />
+	</KeyBindings>
+  <Symbols>
+    <GuidSymbol name="FastGitBranchX64" value="{2d9e9f0e-70e0-4226-98c2-96f0465c937c}">
+      <IDSymbol name="MyMenuGroup" value="0x0001" />
+      <IDSymbol name="CreateBranch" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
