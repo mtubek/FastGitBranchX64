@@ -38,9 +38,15 @@ namespace FastGitBranchX64
             firstPart.SelectedIndex = 0;
             secondPart.ItemsSource = SecondPart;
             secondPart.SelectedIndex = 0;
+            textBoxBranchName.Focus();
         }
 
         private void buttonCreateBranch_Click(object sender, RoutedEventArgs e)
+        {
+            Zapisz();
+        }
+
+        private void Zapisz()
         {
             BranchName = _branchName;
             Checkout = checkBoxCheckout.IsChecked.GetValueOrDefault();
@@ -86,8 +92,12 @@ namespace FastGitBranchX64
                 
         }
 
-        private void textBoxBranchName_KeyDown(object sender, KeyEventArgs e)
+        private void textBoxBranchName_KeyUp(object sender, KeyEventArgs e)
         {
+            if(e.Key == Key.Enter)
+            {
+                Zapisz();
+            }
             if (timer != null)
                 timer.Stop();
 

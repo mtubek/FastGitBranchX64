@@ -18,7 +18,7 @@
             
         </StackPanel>
         <Label Content="Branch Name"/>
-        <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyDown"/>
+        <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyUp"/>
         <Label x:Name="branchNamePreview" Content="Branch Name" Foreground="Red"/>
         <CheckBox x:Name="checkBoxCheckout" Content="Checkout"  IsChecked="True" Margin="0,0,0,10">
             
