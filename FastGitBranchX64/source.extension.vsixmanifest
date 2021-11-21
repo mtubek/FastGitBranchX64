@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="FastGitBranchX64.afddc803-1b6f-4183-bd1c-e396f06abd8e" Version="0.1" Language="en-US" Publisher="Maciej Tubek" />
         <DisplayName>Fast Git Branch (X64)</DisplayName>
-        <Description xml:space="preserve">Create branch from custom list in options</Description>
+        <Description xml:space="preserve">Create git branch from parts defined in options menu for later quick select.</Description>
         <License>license.txt</License>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>

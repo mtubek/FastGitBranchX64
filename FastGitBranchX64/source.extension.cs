@@ -9,7 +9,7 @@ namespace FastGitBranchX64
     {
         public const string Id = "FastGitBranchX64.afddc803-1b6f-4183-bd1c-e396f06abd8e";
         public const string Name = "Fast Git Branch (X64)";
-        public const string Description = @"Create branch from custom list in options";
+        public const string Description = @"Create git branch from parts defined in options menu for later quick select.";
         public const string Language = "en-US";
         public const string Version = "0.1";
         public const string Author = "Maciej Tubek";
