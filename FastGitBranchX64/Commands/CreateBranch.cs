@@ -47,8 +47,8 @@ namespace FastGitBranchX64
 
             if (gitBranchUC.CreateBranch)
             {
-                string gitCommand = "git";
-                string gitArgumentStart = $@"-C {solutionPath}";
+                //string gitCommand = "git";
+                //string gitArgumentStart = $@"-C {solutionPath}";
 
                 await VS.StatusBar.StartAnimationAsync(StatusAnimation.Sync);
                 await VS.StatusBar.ShowMessageAsync($"Creating branch {gitBranchUC.BranchName}");
@@ -103,7 +103,7 @@ namespace FastGitBranchX64
                 outputwindow.GetPane(id, out IVsOutputWindowPane pane);
                 if (input != null)
                 {
-                    pane.OutputString($"{input}{Environment.NewLine}");
+                    pane.OutputStringThreadSafe($"{input}{Environment.NewLine}");
                 }
             });
         }
