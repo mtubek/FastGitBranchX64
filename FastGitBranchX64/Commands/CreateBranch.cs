@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Shell.Interop;
+﻿using LibGit2Sharp;
+using Microsoft.VisualStudio.Shell.Interop;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,8 +10,11 @@ namespace FastGitBranchX64
     internal sealed class CreateBranch : BaseCommand<CreateBranch>
     {
         Guid id = new("e6afbe38-c42e-402c-866f-b6a612be4245");
+        Repository gitRepository;
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
+            var solutionPath = await GetSolutionPathAsync();
+            gitRepository = new Repository(solutionPath);
             #region definiowanie outputu
             var outputwindow = await VS.Services.GetOutputWindowAsync();
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.RunAsync(async delegate
@@ -25,7 +29,7 @@ namespace FastGitBranchX64
 
 
 
-            var gitBranchUC = new FastGitBranchControl();
+            var gitBranchUC = new FastGitBranchControl(gitRepository);
             System.Windows.Window window = new System.Windows.Window
             {
                 WindowStyle = WindowStyle.None,
@@ -40,7 +44,7 @@ namespace FastGitBranchX64
 
             if(gitBranchUC.CreateBranch)
             {
-                var solutionPath = await GetSolutionPathAsync();
+                
 
                 string gitCommand = "git";
                 string gitArgumentStart = $@"-C {solutionPath}";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,9 @@ namespace FastGitBranchX64
         private string _secondPartString;
         private string _branchName;
         private System.Windows.Threading.DispatcherTimer timer;
-        public FastGitBranchControl()
+        private Repository gitRepository;
+
+        public FastGitBranchControl(Repository gitRepository)
         {
             InitializeComponent();
             var FirstPart = General.Instance.FirstPart.ToList();
@@ -39,6 +42,7 @@ namespace FastGitBranchX64
             secondPart.ItemsSource = SecondPart;
             secondPart.SelectedIndex = 0;
             textBoxBranchName.Focus();
+            this.gitRepository = gitRepository;
         }
 
         private void buttonCreateBranch_Click(object sender, RoutedEventArgs e)
@@ -48,6 +52,13 @@ namespace FastGitBranchX64
 
         private void Zapisz()
         {
+            if(gitRepository.Branches.Any(b=>b.FriendlyName == _branchName))
+            {
+                labelError.Content = "This branch alredy exists";
+                labelError.Visibility = Visibility.Visible;
+                return;
+            }
+            
             BranchName = _branchName;
             Checkout = checkBoxCheckout.IsChecked.GetValueOrDefault();
             CreateBranch = true;
