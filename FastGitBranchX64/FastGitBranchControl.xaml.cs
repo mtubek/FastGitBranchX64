@@ -213,5 +213,10 @@ namespace FastGitBranchX64
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 4, 4
         };
+
+        private void buttonClickUpGetTitle_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
