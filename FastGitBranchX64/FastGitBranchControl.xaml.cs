@@ -1,19 +1,9 @@
 ﻿using LibGit2Sharp;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FastGitBranchX64
 {
@@ -52,13 +42,19 @@ namespace FastGitBranchX64
 
         private void Zapisz()
         {
-            if(gitRepository.Branches.Any(b=>b.FriendlyName == _branchName))
+            if (CheckIfBranchExists())
             {
                 labelError.Content = "This branch alredy exists";
                 labelError.Visibility = Visibility.Visible;
+                textBoxBranchName.Focus();
                 return;
             }
-            
+            else if (!ChechIfBranchNameValid())
+            {
+                labelError.Content = "Branch name not valid";
+                labelError.Visibility = Visibility.Visible;
+                return;
+            }
             BranchName = _branchName;
             Checkout = checkBoxCheckout.IsChecked.GetValueOrDefault();
             CreateBranch = true;
@@ -79,7 +75,7 @@ namespace FastGitBranchX64
         private void secondPart_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             _secondPartString = secondPart.SelectedItem?.ToString();
-            if(_secondPartString==null)
+            if (_secondPartString == null)
             {
                 _secondPartString = secondPart.Text;
             }
@@ -89,7 +85,7 @@ namespace FastGitBranchX64
         private void UpdateBranchNamePreview()
         {
             var sb = new StringBuilder();
-            if(_firstPartString!=null && _firstPartString!="")
+            if (_firstPartString != null && _firstPartString != "")
             {
                 sb.Append($"{_firstPartString}/");
             }
@@ -100,12 +96,27 @@ namespace FastGitBranchX64
             sb.Append(textBoxBranchName.Text.Replace(" ", "-"));
             _branchName = sb.ToString();
             branchNamePreview.Content = $"Branch name preview: {_branchName}";
-                
+            if (CheckIfBranchExists())
+            {
+                labelError.Content = "This branch alredy exists";
+                labelError.Visibility = Visibility.Visible;
+                return;
+            }
+            else if(!ChechIfBranchNameValid())
+            {
+                labelError.Content = "Branch name not valid";
+                labelError.Visibility = Visibility.Visible;
+                return;
+            }
+            else
+            {
+                labelError.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void textBoxBranchName_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 Zapisz();
             }
@@ -120,7 +131,6 @@ namespace FastGitBranchX64
             };
             timer.Interval = TimeSpan.FromMilliseconds(300);
             timer.Start();
-
         }
 
         private void firstPart_KeyUp(object sender, KeyEventArgs e)
@@ -140,5 +150,68 @@ namespace FastGitBranchX64
                 UpdateBranchNamePreview();
             }
         }
+
+        private bool CheckIfBranchExists()
+        {
+            if (gitRepository == null || gitRepository.Branches.Any(b => b.FriendlyName == _branchName))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool ChechIfBranchNameValid()
+        {
+            if (gitRepository != null)
+            {
+                for (int i = 0; i < _branchName.Length; i++)
+                {
+                    if (refname_disposition[(int)_branchName[i]] == 4)
+                    {
+                        return false;
+                    }
+                    if (refname_disposition[(int)_branchName[i]] == 2 && _branchName[i-1]=='.')
+                    {
+                        return false;
+                    }
+                    if (refname_disposition[(int)_branchName[i]] == 3 && _branchName[i - 1] == '@')
+                    {
+                        return false;
+                    }
+                    if (refname_disposition[(int)_branchName[i]] == 5)
+                    {
+                        return false;
+                    }
+                }
+                if (_branchName == "")
+                {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /*
+         * How to handle various characters in refnames:
+         * 0: An acceptable character for refs
+         * 1: End-of-component
+         * 2: ., look for a preceding . to reject .. in refs
+         * 3: {, look for a preceding @ to reject @{ in refs
+         * 4: A bad character: ASCII control characters, and
+         *    ":", "?", "[", "\", "^", "~", SP, or TAB
+         * 5: *, reject unless REFNAME_REFSPEC_PATTERN is set
+         */
+
+        private static int[] refname_disposition = new int[]{
+            1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+            4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+            4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 2, 1,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 4, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 4, 4
+        };
     }
 }

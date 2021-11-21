@@ -64,16 +64,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lib\alpine-x64\libgit2-106a5f2.so" />
-    <None Include="lib\alpine.3.9-x64\libgit2-106a5f2.so" />
-    <None Include="lib\debian-arm64\libgit2-106a5f2.so" />
-    <None Include="lib\debian.9-x64\libgit2-106a5f2.so" />
-    <None Include="lib\fedora-x64\libgit2-106a5f2.so" />
-    <None Include="lib\linux-x64\libgit2-106a5f2.so" />
-    <None Include="lib\osx\libgit2-106a5f2.dylib" />
-    <None Include="lib\rhel-x64\libgit2-106a5f2.so" />
-    <None Include="lib\ubuntu.16.04-arm64\libgit2-106a5f2.so" />
-    <None Include="lib\ubuntu.18.04-x64\libgit2-106a5f2.so" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
       <Generator>VsixManifestGenerator</Generator>
@@ -128,12 +118,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lib\linux-arm64\" />
-    <Folder Include="lib\linux-arm\" />
-    <Folder Include="lib\linux-musl-x64\" />
-    <Folder Include="lib\osx-x64\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
