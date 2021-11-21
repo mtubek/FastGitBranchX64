@@ -33,6 +33,17 @@ namespace FastGitBranchX64
         [TypeConverter(typeof(ArrayConverter))]
         public string[] SecondPart { get; set; }
 
+        [Category("ClickUp")]
+        [DisplayName("Enable usage")]
+        [Description("Enable CLickUP id field in branch form")]
+        [DefaultValue("false")]
+        public bool ClickUpEnable { get; set; } = false;
+
+        [Category("ClickUp")]
+        [DisplayName("API token")]
+        [Description("Personal token found in CLickup Setting -> Apps -> Api Token.")]
+        public string ClickUpPersonalToken { get; set; }
+
         public General()
         {
             FirstPart = new string[] { "feature", "hotfix", "release", "upgrade" };
