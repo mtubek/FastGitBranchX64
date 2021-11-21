@@ -2,10 +2,12 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="FastGitBranchX64.afddc803-1b6f-4183-bd1c-e396f06abd8e" Version="0.1" Language="en-US" Publisher="Maciej Tubek" />
-        <DisplayName>FastGitBranchX64</DisplayName>
+        <DisplayName>Fast Git Branch (X64)</DisplayName>
         <Description xml:space="preserve">Create branch from custom list in options</Description>
+        <License>license.txt</License>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>
+        <Tags>git, branch</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">

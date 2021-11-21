@@ -17,7 +17,7 @@
 	    <Icon guid="ImageCatalogGuid" id="Git" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>Create Branch</ButtonText>
+          <ButtonText>Fast Git Create Branch</ButtonText>
           <LocCanonicalName>.FastGitBranchX64.CreateBranch</LocCanonicalName>
         </Strings>
       </Button>
