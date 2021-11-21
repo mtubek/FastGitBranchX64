@@ -9,19 +9,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400" MinWidth="100" MinHeight="98" BorderThickness="1" Margin="0" Padding="10">
     <StackPanel>
-        
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
             <Label Content="First part"/>
             <ComboBox x:Name="firstPart" Width="120" IsEditable="True" SelectionChanged="firstPart_SelectionChanged" KeyUp="firstPart_KeyUp" />
             <Label Content="Second part"/>
             <ComboBox x:Name="secondPart" Width="120" IsEditable="True" SelectionChanged="secondPart_SelectionChanged" KeyUp="secondPart_KeyUp" />
-            
+
         </StackPanel>
         <Label Content="Branch Name"/>
         <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyUp"/>
-        <Label x:Name="branchNamePreview" Content="Branch Name" Foreground="Red"/>
+        <Label Content="Branch Preview" x:Name="branchNamePreview" Foreground="#FFFFCB00" FontWeight="Normal"/>
+           
+        <Label x:Name="labelError" Content="Error" Foreground="Red" Visibility="Collapsed"/>
         <CheckBox x:Name="checkBoxCheckout" Content="Checkout"  IsChecked="True" Margin="0,0,0,10">
-            
+
         </CheckBox>
         <Button x:Name="buttonCreateBranch" Content="Create" Margin="0,0,0,10" Click="buttonCreateBranch_Click"/>
         <Button x:Name="buttonCancel" Content="Cancel" Margin="0,0,0,10" Click="buttonCancel_Click"/>
