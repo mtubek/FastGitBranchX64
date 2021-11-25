@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.IO;
 using Commands = LibGit2Sharp.Commands;
 
 namespace FastGitBranchX64
@@ -16,7 +17,18 @@ namespace FastGitBranchX64
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
             var solutionPath = await GetSolutionPathAsync();
-            gitRepository = new Repository(solutionPath);
+            var path = await LookForGitRepo(solutionPath);
+            if (!String.IsNullOrEmpty(path))
+            {
+                gitRepository = new Repository(path);
+            }
+            else
+            {
+                var message = new Community.VisualStudio.Toolkit.MessageBox();
+                await message.ShowAsync("Solution dosen't contain git repository",buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                return;
+            }
+            
 
             #region definiowanie outputu
 
@@ -92,6 +104,28 @@ namespace FastGitBranchX64
             }
 
             return string.Empty;
+        }
+
+        private async Task<string> LookForGitRepo(string path)
+        {
+
+            if(Repository.IsValid(path))
+            {
+                return path;
+            }
+            else
+            {
+                if (path.LastIndexOf('\\') == -1)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return await LookForGitRepo(path.Substring(0, path.LastIndexOf('\\')));
+                }
+            }
+
+            
         }
 
         private async void WriteToOutputWindow(string input)
