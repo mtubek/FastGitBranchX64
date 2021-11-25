@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="FastGitBranchX64.afddc803-1b6f-4183-bd1c-e396f06abd8e" Version="0.1" Language="en-US" Publisher="Maciej Tubek" />
+        <Identity Id="FastGitBranchX64.afddc803-1b6f-4183-bd1c-e396f06abd8e" Version="0.11" Language="en-US" Publisher="Maciej Tubek" />
         <DisplayName>Fast Git Branch (X64)</DisplayName>
         <Description xml:space="preserve">Create git branch from parts defined in options menu for later quick select.</Description>
         <License>license.txt</License>
