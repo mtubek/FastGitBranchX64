@@ -13,3 +13,8 @@ Supported checking if branch already exists
 Support validation of branch name
 <br><br>
 ![Validate branch name](https://maciejtubek.gallerycdn.vsassets.io/extensions/maciejtubek/fastgitbranchx64/0.1/1637514686186/image__2.png)
+<br><br>
+## Release Notes
+### Version 0.11
+**Fix**
+- Fix error when git workdirectory not in solution folder
