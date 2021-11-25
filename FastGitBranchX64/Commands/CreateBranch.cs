@@ -25,7 +25,7 @@ namespace FastGitBranchX64
             else
             {
                 var message = new Community.VisualStudio.Toolkit.MessageBox();
-                await message.ShowAsync("Solution dosen't contain git repository");
+                await message.ShowAsync("Solution dosen't contain git repository",buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
                 return;
             }
             
