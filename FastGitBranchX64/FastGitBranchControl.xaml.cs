@@ -1,5 +1,9 @@
 ﻿using LibGit2Sharp;
+using Newtonsoft.Json;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,14 +37,18 @@ namespace FastGitBranchX64
             secondPart.SelectedIndex = 0;
             textBoxBranchName.Focus();
             this.gitRepository = gitRepository;
+            if(General.Instance.ClickUpEnable)
+            {
+                stackPanelClickUp.Visibility = Visibility.Visible;
+            }
         }
 
         private void buttonCreateBranch_Click(object sender, RoutedEventArgs e)
         {
-            Zapisz();
+            CreateGitBranch();
         }
 
-        private void Zapisz()
+        private void CreateGitBranch()
         {
             if (CheckIfBranchExists())
             {
@@ -95,7 +103,7 @@ namespace FastGitBranchX64
             }
             sb.Append(textBoxBranchName.Text.Replace(" ", "-"));
             _branchName = sb.ToString();
-            branchNamePreview.Content = $"Branch name preview: {_branchName}";
+            branchNamePreview.Text = $"Branch name preview: {_branchName}";
             if (CheckIfBranchExists())
             {
                 labelError.Content = "This branch alredy exists";
@@ -118,7 +126,7 @@ namespace FastGitBranchX64
         {
             if (e.Key == Key.Enter)
             {
-                Zapisz();
+                CreateGitBranch();
             }
             if (timer != null)
                 timer.Stop();
@@ -213,5 +221,89 @@ namespace FastGitBranchX64
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 4, 4
         };
+
+        private void buttonClickUpGetTitle_Click(object sender, RoutedEventArgs e)
+        {
+            GetBranchNameFromClickUpTask();
+        }
+
+        public string RemoveDiacritics(string s)
+        {
+            string normalizedString = null;
+            StringBuilder stringBuilder = new StringBuilder();
+            normalizedString = s.Normalize(NormalizationForm.FormD);
+            int i = 0;
+            char c = '\0';
+
+            for (i = 0; i <= normalizedString.Length - 1; i++)
+            {
+                c = normalizedString[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().ToLower();
+        }
+
+        public static T Deserialize<T>(byte[] byteArray) where T : new()
+        {
+            T obj = new T();
+            try
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                using (StreamReader stream = new StreamReader(new MemoryStream(byteArray)))
+                {
+                    obj = (T)serializer.Deserialize(new JsonTextReader(stream), typeof(T));
+                }
+            }
+            catch (Exception ex)
+            {
+                return default(T);
+            }
+            return obj;
+        }
+
+        private void textBoxClickUpId_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                GetBranchNameFromClickUpTask();
+            }
+        }
+        async void GetBranchNameFromClickUpTask()
+        {
+            var baseAddress = new Uri("https://api.clickup.com/api/v2/");
+            var taskId = textBoxClickUpId.Text.Replace("#", "");
+            if (taskId.Contains("/"))
+            {
+                var taskIdDecompose = taskId.Split('/');
+                taskId = taskIdDecompose.LastOrDefault();
+            }
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
+
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", General.Instance.ClickUpPersonalToken);
+
+
+                using (var response = await httpClient.GetAsync($"task/{taskId}/"))
+                {
+                    var clickupTask = Deserialize<BO.ClickUP.Task>(await response.Content.ReadAsByteArrayAsync());
+                    if (clickupTask.id != null)
+                    {
+                        var prefix = General.Instance.ClickUpIdAsPrefix ? $"#{clickupTask.id}-" : "";
+                        var name = $"{prefix}{RemoveDiacritics(clickupTask.name)}";
+                        textBoxBranchName.Text = $"{name.Replace(' ', '-')}";
+                        textBoxBranchName.Focus();
+                        UpdateBranchNamePreview();
+                    }
+                    else
+                    {
+                        labelError.Content = "An error occured when trying to get Clickup Task";
+                    }
+                }
+            }
+        }
     }
 }
