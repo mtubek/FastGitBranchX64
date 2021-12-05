@@ -44,6 +44,13 @@ namespace FastGitBranchX64
         [Description("Personal token found in CLickup Setting -> Apps -> Api Token.")]
         public string ClickUpPersonalToken { get; set; }
 
+        [Category("ClickUp")]
+        [DisplayName("Add task id as prefix")]
+        [Description("Add taks id as prefix when creating branch name.")]
+        [DefaultValue("true")]
+        public bool ClickUpIdAsPrefix { get; set; }
+
+
         public General()
         {
             FirstPart = new string[] { "feature", "hotfix", "release", "upgrade" };

@@ -17,14 +17,16 @@
             <ComboBox x:Name="secondPart" Width="120" IsEditable="True" SelectionChanged="secondPart_SelectionChanged" KeyUp="secondPart_KeyUp" />
 
         </StackPanel>
-        <StackPanel x:Name="stackPanelClickUp" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,10" Visibility="Visible">
+        <StackPanel x:Name="stackPanelClickUp" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,10" Visibility="Collapsed">
             <Label Content="ClickUp taks id" />
-            <TextBox x:Name="textBoxClickUpId" Width="200" />
+            <TextBox x:Name="textBoxClickUpId" Width="200" KeyUp="textBoxClickUpId_KeyUp" />
             <Button x:Name="buttonClickUpGetTitle" Content="Get Title" Click="buttonClickUpGetTitle_Click"/>
         </StackPanel>
         <Label Content="Branch Name"/>
         <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyUp"/>
-        <Label Content="Branch Preview" x:Name="branchNamePreview" Foreground="#FFFFCB00" FontWeight="Normal"/>
+        <TextBlock  x:Name="branchNamePreview" Foreground="#FFFFCB00" FontWeight="Normal" TextWrapping="WrapWithOverflow">
+            Branch Preview
+        </TextBlock>
            
         <Label x:Name="labelError" Content="Error" Foreground="Red" Visibility="Collapsed"/>
         <CheckBox x:Name="checkBoxCheckout" Content="Checkout"  IsChecked="True" Margin="0,0,0,10">
