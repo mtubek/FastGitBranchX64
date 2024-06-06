@@ -37,7 +37,7 @@ namespace FastGitBranchX64
             secondPart.SelectedIndex = 0;
             textBoxBranchName.Focus();
             this.gitRepository = gitRepository;
-            if(General.Instance.ClickUpEnable)
+            if (General.Instance.ClickUpEnable)
             {
                 stackPanelClickUp.Visibility = Visibility.Visible;
             }
@@ -57,12 +57,19 @@ namespace FastGitBranchX64
                 textBoxBranchName.Focus();
                 return;
             }
-            else if (!ChechIfBranchNameValid())
+            var checkBranchName = ChechIfBranchNameValid();
+            if (!checkBranchName.Item1)
             {
-                labelError.Content = "Branch name not valid";
+                labelError.Content = $"Branch name not valid. {checkBranchName.Item2}";
                 labelError.Visibility = Visibility.Visible;
                 return;
             }
+            else if (!string.IsNullOrEmpty(checkBranchName.Item2))
+            {
+                labelInfo.Content = $"{checkBranchName.Item2}";
+                labelInfo.Visibility = Visibility.Visible;
+            }
+
             BranchName = _branchName;
             Checkout = checkBoxCheckout.IsChecked.GetValueOrDefault();
             CreateBranch = true;
@@ -71,7 +78,11 @@ namespace FastGitBranchX64
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).DialogResult = false;
+            try
+            {
+                Window.GetWindow(this).DialogResult = false;
+            }
+            catch { }
         }
 
         private void firstPart_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -110,16 +121,22 @@ namespace FastGitBranchX64
                 labelError.Visibility = Visibility.Visible;
                 return;
             }
-            else if(!ChechIfBranchNameValid())
+            var checkBranchName = ChechIfBranchNameValid();
+            if (!checkBranchName.Item1)
             {
-                labelError.Content = "Branch name not valid";
+                labelError.Content = $"Branch name not valid. {checkBranchName.Item2}";
                 labelError.Visibility = Visibility.Visible;
                 return;
             }
-            else
+            else if (!string.IsNullOrEmpty(checkBranchName.Item2))
             {
-                labelError.Visibility = Visibility.Collapsed;
+                labelInfo.Content = $"{checkBranchName.Item2}";
+                labelInfo.Visibility = Visibility.Visible;
+                return;
             }
+
+            labelError.Visibility = Visibility.Collapsed;
+            labelInfo.Visibility = Visibility.Collapsed;
         }
 
         private void textBoxBranchName_KeyUp(object sender, KeyEventArgs e)
@@ -168,36 +185,47 @@ namespace FastGitBranchX64
             return false;
         }
 
-        private bool ChechIfBranchNameValid()
+        private Tuple<bool, string> ChechIfBranchNameValid()
         {
+            string infoMessage = null;
             if (gitRepository != null)
             {
+                // _branchName = RemoveDiacritics(_branchName);
                 for (int i = 0; i < _branchName.Length; i++)
                 {
-                    if (refname_disposition[(int)_branchName[i]] == 4)
+                    if ((int)_branchName[i] <= refname_disposition.Length - 1)
                     {
-                        return false;
+                        if (refname_disposition[(int)_branchName[i]] == 4 || refname_disposition[(int)_branchName[i]] == 5)
+                        {
+                            return new Tuple<bool, string>(false, $"Incorect char {_branchName[i]} at {i + 1}");
+                        }
+                        if (refname_disposition[(int)_branchName[i]] == 2 && _branchName[i - 1] == '.')
+                        {
+                            return new Tuple<bool, string>(false, $"Incorect sequence {_branchName[i - 1]}{_branchName[i]} at {i}");
+                        }
+                        if (refname_disposition[(int)_branchName[i]] == 3 && _branchName[i - 1] == '@')
+                        {
+                            return new Tuple<bool, string>(false, $"Incorect sequence {_branchName[i - 1]}{_branchName[i]} at {i}");
+                        }
                     }
-                    if (refname_disposition[(int)_branchName[i]] == 2 && _branchName[i-1]=='.')
+                    else
                     {
-                        return false;
+                        infoMessage = "We do not recommend using diacritical marks in branch name";
                     }
-                    if (refname_disposition[(int)_branchName[i]] == 3 && _branchName[i - 1] == '@')
-                    {
-                        return false;
-                    }
-                    if (refname_disposition[(int)_branchName[i]] == 5)
-                    {
-                        return false;
-                    }
+
                 }
+                var test = (int)_branchName[_branchName.Length - 1];
                 if (_branchName == "")
                 {
-                    return false;
+                    return new Tuple<bool, string>(false, $"Branch name is empty");
                 }
-                return true;
+                if (_branchName[_branchName.Length - 1] == '.')
+                {
+                    return new Tuple<bool, string>(false, $"Branch name can't end with character .");
+                }
+                return new Tuple<bool, string>(true, infoMessage);
             }
-            return false;
+            return new Tuple<bool, string>(false, $"There is no repository");
         }
 
         /*

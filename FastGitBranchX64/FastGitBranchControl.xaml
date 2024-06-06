@@ -24,11 +24,12 @@
         </StackPanel>
         <Label Content="Branch Name"/>
         <TextBox x:Name="textBoxBranchName" KeyUp="textBoxBranchName_KeyUp"/>
-        <TextBlock  x:Name="branchNamePreview" Foreground="#FFFFCB00" FontWeight="Normal" TextWrapping="WrapWithOverflow">
+        <TextBlock  x:Name="branchNamePreview" Foreground="Green" FontWeight="Normal" TextWrapping="WrapWithOverflow">
             Branch Preview
         </TextBlock>
            
         <Label x:Name="labelError" Content="Error" Foreground="Red" Visibility="Collapsed"/>
+        <Label x:Name="labelInfo" Content="Info" Foreground="#FFFFCB00" Visibility="Collapsed"/>
         <CheckBox x:Name="checkBoxCheckout" Content="Checkout"  IsChecked="True" Margin="0,0,0,10">
 
         </CheckBox>
