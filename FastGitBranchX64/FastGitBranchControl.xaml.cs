@@ -29,6 +29,7 @@ namespace FastGitBranchX64
         public FastGitBranchControl(Repository gitRepository)
         {
             InitializeComponent();
+            PreviewKeyDown += (s, e) => { if (e.Key == Key.Escape) Window.GetWindow(this).DialogResult = false; };
             var FirstPart = General.Instance.FirstPart.ToList();
             var SecondPart = General.Instance.SecondPart.ToList();
             firstPart.ItemsSource = FirstPart;
